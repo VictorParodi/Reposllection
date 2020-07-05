@@ -1,18 +1,21 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useCookies } from 'react-cookie';
 import { Button, Modal, Icon, Form } from 'semantic-ui-react';
 import { INITIAL_VALUES, ERROR_SCHEMA, FORM_FIELDS} from './config';
 import './RegisterDataForm.css';
 
 const RegisterDataForm = (props) => {
     const { isOpen, closeModal } = props;
+    const [ cookies, setCookie ] = useCookies();
 
     const formik = useFormik({
         initialValues: INITIAL_VALUES,
         validationSchema: Yup.object().shape(ERROR_SCHEMA),
+
         onSubmit: (values, {resetForm}) => {
-            console.log(values);
+            setCookie('user', values, { path: '/' });
             resetForm(INITIAL_VALUES);
             closeModal();
         }
