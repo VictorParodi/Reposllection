@@ -1,36 +1,81 @@
 import React from 'react';
-import { Button, Modal, Icon } from 'semantic-ui-react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { Button, Modal, Icon, Form } from 'semantic-ui-react';
+import { INITIAL_VALUES, ERROR_SCHEMA, FORM_FIELDS} from './config';
+import './RegisterDataForm.css';
 
-class RegisterDataForm extends React.Component {
-    render() {
-        const { isOpen, closeModal } = this.props;
+const RegisterDataForm = (props) => {
+    const { isOpen, closeModal } = props;
 
-        return (
-            <Modal
-                open={isOpen}
-                closeIcon={true}
-                onClose={closeModal}
-            >
-                <Modal.Header>Register Data</Modal.Header>
+    const formik = useFormik({
+        initialValues: INITIAL_VALUES,
+        validationSchema: Yup.object().shape(ERROR_SCHEMA),
+        onSubmit: (values, {resetForm}) => {
+            console.log(values);
+            resetForm(INITIAL_VALUES);
+            closeModal();
+        }
+    });
 
-                <Modal.Content>
-                    <Modal.Description>
-                        <p>Displying a Modal</p>
-                    </Modal.Description>
-                </Modal.Content>
-
-                <Modal.Actions>
-                    <Button color='green' inverted>
-                        <Icon name='checkmark' /> Submit
-                    </Button>
-
-                    <Button color='red' inverted onClick={closeModal}>
-                        <Icon name='remove' /> Cancel
-                    </Button>
-                </Modal.Actions>
-            </Modal>
-        );
+    const handleCloseModal = () => {
+        formik.handleReset();
+        closeModal();
     }
+
+    const renderInputs = () => {
+        return FORM_FIELDS.map(({ field, label, type, placeholder }) => {
+            return (
+                <Form.Input
+                    key={field}
+                    type={type}
+                    className="column formGroup__input"
+                    label={label}
+                    placeholder={placeholder}
+                    value={formik.values[field].trim()}
+                    onChange={formik.handleChange(field)}
+                    error={
+                        formik.errors[field] && formik.touched[field]
+                        ? { content: formik.errors[field], pointing: 'above' }
+                        : false
+                    }
+                />
+            );
+        });
+    }
+
+    return (
+        <Modal
+            open={isOpen}
+            closeIcon={true}
+            onClose={closeModal}
+        >
+            <Modal.Header>Register Data</Modal.Header>
+
+            <Modal.Content>
+                <Form error className="ui grid">
+                    <Form.Group className="two columns row formGroup">
+                        { renderInputs() }
+                    </Form.Group>
+                </Form>
+            </Modal.Content>
+
+            <Modal.Actions>
+                <Button
+                    color='green'
+                    inverted
+                    type="submit"
+                    onClick={formik.handleSubmit}
+                >
+                    <Icon name='checkmark' /> Submit
+                </Button>
+
+                <Button color='red' inverted onClick={handleCloseModal}>
+                    <Icon name='remove' /> Cancel
+                </Button>
+            </Modal.Actions>
+        </Modal>
+    );
 }
 
 export default RegisterDataForm;

@@ -30,7 +30,6 @@ class Home extends React.Component {
 
                         <Menu.Item name='Link 1' />
                         <Menu.Item name='Link 2' />
-                        <Menu.Item name='Link 3' />
                     </Menu>
                 </header>
 
