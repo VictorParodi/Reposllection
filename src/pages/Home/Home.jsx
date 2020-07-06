@@ -26,6 +26,7 @@ class Home extends React.Component {
                         </Menu.Item>
 
                         <Menu.Item
+                            className="register-link"
                             onClick={this.openCloseRegisterForm}
                             name='Register data'
                         />

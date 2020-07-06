@@ -1,8 +1,9 @@
 import React, { useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import { fetchRepos, fetchGitUser, goToNextPage, goToBackPage } from './../../actions';
-import { parseTableData, headers } from './helper';
 import { Icon, Menu, Table } from 'semantic-ui-react';
+import { parseTableData, headers } from './helper';
+import RepoItem from './../RepoItem/RepoItem';
 
 const ReposList = (props) => {
     const [ arrow, setArrow ] = useState(true);
@@ -39,18 +40,7 @@ const ReposList = (props) => {
     const renderTableCells = () => {
         return (
             props.repos.map((repo, index) => {
-                const { id, name, description, language, default_branch, git_url } = repo;
-                const notData = ' --- ';
-
-                return (
-                    <Table.Row key={id || index}>
-                        <Table.Cell>{name || notData}</Table.Cell>
-                        <Table.Cell>{description || notData}</Table.Cell>
-                        <Table.Cell>{language || notData}</Table.Cell>
-                        <Table.Cell>{default_branch || notData}</Table.Cell>
-                        <Table.Cell>{git_url || notData}</Table.Cell>
-                    </Table.Row>
-                );
+                return <RepoItem key={repo.id || index} repo={repo} />;
             })
         );
     }
