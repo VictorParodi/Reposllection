@@ -1,56 +1,52 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchRepos } from './../../actions';
-import { Icon, Menu, Table, Label } from 'semantic-ui-react';
+import { parseTableData, headers } from './helper';
+import { Icon, Menu, Table } from 'semantic-ui-react';
 
 class ReposList extends React.Component {
     componentDidMount() {
         this.props.fetchRepos('VictorParodi', 1);
     }
 
+    renderTableHeaders = () => {
+        return headers.map((header) => {
+            return (
+                <Table.HeaderCell key={header}>{header}</Table.HeaderCell>
+            );
+        });
+    }
+
+    renderTableCells = () => {
+        return (
+            this.props.repos.map((repo) => {
+                const { id, name, description, language, default_branch, git_url } = repo;
+                const notData = ' --- ';
+
+                return (
+                    <Table.Row key={id || notData}>
+                        <Table.Cell>{name || notData}</Table.Cell>
+                        <Table.Cell>{description || notData}</Table.Cell>
+                        <Table.Cell>{language || notData}</Table.Cell>
+                        <Table.Cell>{default_branch || notData}</Table.Cell>
+                        <Table.Cell>{git_url || notData}</Table.Cell>
+                    </Table.Row>
+                );
+            })
+        );
+    }
+
     render() {
         return (
-            <Table celled>
+            <Table celled striped>
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell>Name</Table.HeaderCell>
-                        <Table.HeaderCell>Description</Table.HeaderCell>
-                        <Table.HeaderCell>Language</Table.HeaderCell>
-                        <Table.HeaderCell>Default branch</Table.HeaderCell>
-                        <Table.HeaderCell>Git url</Table.HeaderCell>
+                        { this.renderTableHeaders() }
                     </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
-                    <Table.Row>
-                        <Table.Cell>
-                            <Label ribbon>Repo name</Label>
-                        </Table.Cell>
-                        <Table.Cell>Repo data</Table.Cell>
-                        <Table.Cell>Repo data</Table.Cell>
-                        <Table.Cell>Repo data</Table.Cell>
-                        <Table.Cell>Repo data</Table.Cell>
-                    </Table.Row>
-
-                    <Table.Row>
-                        <Table.Cell>
-                            <Label ribbon>Repo name</Label>
-                        </Table.Cell>
-                        <Table.Cell>Repo data</Table.Cell>
-                        <Table.Cell>Repo data</Table.Cell>
-                        <Table.Cell>Repo data</Table.Cell>
-                        <Table.Cell>Repo data</Table.Cell>
-                    </Table.Row>
-
-                    <Table.Row>
-                        <Table.Cell>
-                            <Label ribbon>Repo name</Label>
-                        </Table.Cell>
-                        <Table.Cell>Repo data</Table.Cell>
-                        <Table.Cell>Repo data</Table.Cell>
-                        <Table.Cell>Repo data</Table.Cell>
-                        <Table.Cell>Repo data</Table.Cell>
-                    </Table.Row>
+                    { this.renderTableCells() }
                 </Table.Body>
 
                 <Table.Footer>
@@ -74,7 +70,7 @@ class ReposList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return { repos: state.repos.data };
+    return parseTableData(state.repos.data);
 }
 
 export default connect(mapStateToProps, {
