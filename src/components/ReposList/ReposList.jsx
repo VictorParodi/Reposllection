@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import { fetchRepos, fetchGitUser, goToNextPage, goToBackPage } from './../../actions';
 import { parseTableData, headers } from './helper';
 import { Icon, Menu, Table } from 'semantic-ui-react';
 
 const ReposList = (props) => {
+    const [ arrow, setArrow ] = useState(true);
+    const arrowIcon = arrow ? 'up' : 'down';
+
     useEffect(() => {
         props.fetchRepos(props.gitUser, props.page);
     }, [ props.gitUser, props.page ]);
@@ -17,10 +20,18 @@ const ReposList = (props) => {
         props.goToBackPage(props.page);
     }
 
+    const handleSortDir = (header) => {
+        setArrow(!arrow);
+        props.fetchRepos(props.gitUser, props.page, arrow, header);
+    }
+
     const renderTableHeaders = () => {
         return headers.map((header) => {
             return (
-                <Table.HeaderCell key={header}>{header}</Table.HeaderCell>
+                <Table.HeaderCell key={header}>
+                    {header}
+                    <Icon name={`chevron ${arrowIcon}`} onClick={(header) => handleSortDir(header)} />
+                </Table.HeaderCell>
             );
         });
     }
@@ -82,7 +93,7 @@ const ReposList = (props) => {
 }
 
 const mapStateToProps = (state) => {
-    const repos = parseTableData(state.repos.data);
+    const repos = parseTableData(state.repos);
 
     return {
         repos: repos,
