@@ -9,7 +9,7 @@ class Home extends React.Component {
     }
 
     openCloseRegisterForm = () => {
-        this.setState({ isOpen: !this.state.isOpen });
+        this.setState((state) => ({ isOpen: !state.isOpen }));
     }
 
     render() {

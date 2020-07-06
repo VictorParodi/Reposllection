@@ -2,11 +2,17 @@ import { FETCH_REPOS, NEXT_PAGE, BACK_PAGE, GIT_USER } from './types';
 import githubApi from './../apis/github';
 
 const fetchRepos = (username, page) => {
-    const response = githubApi.get(`${username}/repos?page=${page}&per_page=5`);
+    return async (dispatch) => {
+        try {
+            const response = await githubApi.get(`${username}/repos?page=${page}&per_page=5`);
 
-    return {
-        type: FETCH_REPOS,
-        payload: response
+            dispatch({
+                type: FETCH_REPOS,
+                payload: response
+            });
+        } catch (error) {
+            alert(`${error}. Maybe the Github username is incorrect`);
+        }
     }
 }
 

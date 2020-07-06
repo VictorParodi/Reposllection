@@ -1,16 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import reduxPromise from 'redux-promise';
-import reducers from './reducers';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './config/reduxStore';
 import App from './App.jsx';
-
-const store = createStore(reducers, {}, applyMiddleware(reduxPromise));
 
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+        <PersistGate loading={null} persistor={persistor}>
+            <App />
+        </PersistGate>
     </Provider>,
     document.querySelector('#root')
 );
