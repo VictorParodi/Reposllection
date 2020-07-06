@@ -1,4 +1,4 @@
-import { FETCH_REPOS } from './types';
+import { FETCH_REPOS, NEXT_PAGE, BACK_PAGE, GIT_USER } from './types';
 import githubApi from './../apis/github';
 
 const fetchRepos = (username, page) => {
@@ -10,4 +10,25 @@ const fetchRepos = (username, page) => {
     }
 }
 
-export { fetchRepos };
+const goToNextPage = (page) => {
+    return {
+        type: NEXT_PAGE,
+        payload: page
+    }
+}
+
+const goToBackPage = (page) => {
+    return {
+        type: BACK_PAGE,
+        payload: page
+    }
+}
+
+const fetchGitUser = (gitUser) => {
+    return {
+        type: GIT_USER,
+        payload: gitUser
+    }
+}
+
+export { fetchRepos, goToNextPage, goToBackPage, fetchGitUser };

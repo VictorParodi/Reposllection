@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { fetchGitUser, goToBackPage } from './../../actions';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useCookies } from 'react-cookie';
@@ -16,6 +18,8 @@ const RegisterDataForm = (props) => {
 
         onSubmit: (values, {resetForm}) => {
             setCookie('user', values, { path: '/' });
+            props.fetchGitUser(values.gituser);
+            props.goToBackPage(1);
             resetForm(INITIAL_VALUES);
             closeModal();
         }
@@ -81,4 +85,7 @@ const RegisterDataForm = (props) => {
     );
 }
 
-export default RegisterDataForm;
+export default connect(null, {
+    fetchGitUser,
+    goToBackPage
+})(RegisterDataForm);

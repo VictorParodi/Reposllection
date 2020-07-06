@@ -8,7 +8,7 @@ const parseTableData = (reposData) => {
         return _pick(repo, fields);
     })
 
-    return { repos };
+    return repos;
 }
 
 export { parseTableData, headers };

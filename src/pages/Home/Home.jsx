@@ -28,9 +28,6 @@ class Home extends React.Component {
                             onClick={this.openCloseRegisterForm}
                             name='Register data'
                         />
-
-                        <Menu.Item name='Link 1' />
-                        <Menu.Item name='Link 2' />
                     </Menu>
                 </header>
 
