@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, Menu } from 'semantic-ui-react';
 import RegisterDataForm from './../../components/RegisterData/RegisterDataForm';
+import ReposList from './../../components/ReposList/ReposList';
 
 class Home extends React.Component {
     state = {
@@ -34,6 +35,7 @@ class Home extends React.Component {
                 </header>
 
                 <main>
+                    <ReposList />
                     <RegisterDataForm isOpen={isOpen} closeModal={this.openCloseRegisterForm} />
                 </main>
             </div>
